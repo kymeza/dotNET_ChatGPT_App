@@ -398,6 +398,9 @@ FodyWeavers.xsd
 *.sln.iml
 
 *.idea
+/Backend/.idea/
+/Frontend/.idea/
 /Backend/.idea
 /Frontend/.idea
 /Backend/Backend/appsettings.json
+/.idea/
