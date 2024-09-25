@@ -1,41 +1,95 @@
 ﻿@page "/chat"
+@using Markdig
 @using Microsoft.AspNetCore.SignalR.Client
-@inject NavigationManager Navigation
 @implements IAsyncDisposable
+
+@inject IJSRuntime jsRuntime
+
+<script type="text/javascript">
+        scrollIntoView = (el) => el.scrollIntoView();
+</script>
 
 <PageTitle>Chat</PageTitle>
 
-<div class="form-group">
-    <label>
-        model:
-        <input @bind="modelInput" disabled="@(isConnected)"/>
-    </label>
-</div>
-<div class="form-group">
-    <label>
-        Message:
-        <input @bind="messageInput" size="50" />
-    </label>
-</div>
-<button @onclick="Connect" disabled="@(isConnected)">Connect</button>
-<button @onclick="Send" disabled="@(!isConnected)">Send</button>
+<div class="h-100" style="position: relative;">
+    <div class="w-100 h-100" style="position: relative;">
+        <div class="h-100 d-flex flex-column" style="max-height: 100%">
 
-<hr>
+            <div class="row mt-4">
+                <div class="col">
+                    <input type="text" class="form-control" @bind="modelInput" placeholder="Model Name" />
+                </div>
+                <div class="col">
+                    <button type="button" class="btn btn-primary" @onclick="Connect" disabled="@(isConnected)">Connect</button>
+                </div>
+            </div>
 
-<ul id="messagesList">
-    @foreach (var message in messages)
-    {
-        <li>@message</li>
-    }
-</ul>
+            <div class="my-4" style="height:100%; max-height: 100%; overflow-y: auto;">
+
+                @foreach (var message in messages)
+                {
+                <div class="card text-black mb-3 @(message.Sender is ChatGptRoles.Assistant ? "bg-secondary" : string.Empty)"
+                     style="width: 70%; @(message.Sender is ChatGptRoles.User ? "margin-left:20%" : "margin-left:10%")">
+                    <div class="card-body">
+                        <div class="card-text" style="overflow-x: auto">
+                            @if (string.IsNullOrWhiteSpace(message.Content))
+                            {
+                            <em>I'm thinking...</em>
+                            }
+                            else
+                            {
+                            @((MarkupString)Markdown.ToHtml(message.Content, markdownPipeline))
+                            }
+                        </div>
+                    </div>
+                </div>
+                }
+
+                <div @ref="anchor"></div>
+
+            </div>
+
+            <div class="input-group">
+                <input type="text" class="form-control" @bind="messageInput" placeholder="Ask me anything" @bind:event="oninput" @onkeypress="OnTypingMessageAsync" />
+                <button type="button" class="btn btn-primary" @onclick="AskAsync" disabled="@(!CanSendMessage())">
+                    Send
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 @code {
+    
+    private ElementReference anchor;
+    
+    private static readonly MarkdownPipeline markdownPipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
+    
     private HubConnection? hubConnection;
-    private List<string> messages = new List<string>();
+    
+    private class ChatEntry
+    {
+        public string Sender { get; set; } = string.Empty;
+        public string Content { get; set; } = string.Empty;
+    }
+    
+    private bool CanSendMessage()
+        => !string.IsNullOrWhiteSpace(messageInput) && !isAsking;
+
+    private async Task OnTypingMessageAsync(KeyboardEventArgs keyboardEventArgs)
+    {
+        if (keyboardEventArgs.Code is "Enter")
+        {
+            await AskAsync();
+        }
+    }
+    
+    private List<ChatEntry> messages = new();
+    
     private string? modelInput;
     private string? messageInput;
-    
-    private bool isConnected = false;
+    private bool isAsking;
+    private bool isConnected;
 
     private async Task Connect()
     {
@@ -51,14 +105,39 @@
         await hubConnection.SendAsync("CreateClient", modelInput);
     }
 
-    private async Task Send()
+    private async Task AskAsync()
     {
-        if (hubConnection is not null)
+        if (hubConnection != null)
         {
-            await hubConnection.SendAsync("SendCompletion", messageInput);
+
+            if (!isAsking)
+            {
+                isAsking = true;
+
+                messages.Add(new ChatEntry { Sender = ChatGptRoles.User, Content = messageInput! });
+                var responseMessage = new ChatEntry { Sender = ChatGptRoles.Assistant, Content = string.Empty };
+
+                var responseStream = hubConnection.StreamAsync<string>("SendCompletion", messageInput);
+                messageInput = string.Empty;
+                await Task.Delay(500);
+                messages.Add(responseMessage);
+                StateHasChanged();
+                await jsRuntime.InvokeVoidAsync(@"scrollIntoView", anchor);
+
+                await foreach (var responseChunk in responseStream)
+                {
+                    responseMessage.Content += responseChunk;
+
+                    await Task.Delay(80);
+                    StateHasChanged();
+
+                    await jsRuntime.InvokeVoidAsync(@"scrollIntoView", anchor);
+                }
+
+                isAsking = false;
+            }
         }
     }
-
 
     public async ValueTask DisposeAsync()
     {
