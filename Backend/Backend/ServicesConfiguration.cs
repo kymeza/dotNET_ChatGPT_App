@@ -10,6 +10,7 @@ public static class ServicesConfiguration
     
         // Configuration
         services.AddOptionsAsSelf<OpenAiSettings>(configuration.GetSection("OpenAi"));
+        services.AddOptionsAsSelf<JwtSettings>(configuration.GetSection("Jwt"));
         
         // Hubs
 
