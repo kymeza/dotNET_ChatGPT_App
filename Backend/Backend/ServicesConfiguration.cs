@@ -1,4 +1,6 @@
-﻿using Backend.Models.Config;
+﻿using Backend.Domain.Repositories.AppDbContext;
+using Backend.Models.Config;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
 namespace Backend;
@@ -19,7 +21,8 @@ public static class ServicesConfiguration
         
         
         // Repositories
-        
+        services.AddDbContext<AppDbContext>(options =>
+            options.UseSqlite(configuration.GetConnectionString("AppDbContext")));
         
         // Clients
         
