@@ -17,12 +17,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Controllers\" />
-      <Folder Include="Domain\Interfaces\" />
-      <Folder Include="Helpers\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <Content Update="appsettings.json.template">
         <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
