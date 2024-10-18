@@ -7,19 +7,29 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <Compile Remove="Controllers\**" />
+      <Compile Remove="Domain\**" />
+      <Compile Remove="Helpers\**" />
+      <Content Remove="Controllers\**" />
+      <Content Remove="Domain\**" />
+      <Content Remove="Helpers\**" />
+      <EmbeddedResource Remove="Controllers\**" />
+      <EmbeddedResource Remove="Domain\**" />
+      <EmbeddedResource Remove="Helpers\**" />
+      <None Remove="Controllers\**" />
+      <None Remove="Domain\**" />
+      <None Remove="Helpers\**" />
+    </ItemGroup>
+
+    <ItemGroup>
         <PackageReference Include="Azure.AI.OpenAI" Version="2.0.0-beta.6" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.10" />
         <PackageReference Include="OpenAI" Version="2.0.0-beta.12" />
         <PackageReference Include="Serilog" Version="4.0.1" />
         <PackageReference Include="Serilog.AspNetCore" Version="8.0.2" />
         <PackageReference Include="Serilog.Settings.Configuration" Version="8.0.2" />
         <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Controllers\" />
-      <Folder Include="Domain\Interfaces\" />
-      <Folder Include="Helpers\" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
     </ItemGroup>
 
     <ItemGroup>

@@ -1,10 +1,43 @@
 using Backend;
 using Backend.Hubs;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Serilog;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+// Load configuration from appsettings.json
+var jwtSettings = builder.Configuration.GetSection("Jwt");
+// Get the key from configuration
+var key = Encoding.ASCII.GetBytes(jwtSettings["SecretKey"]);
+// Add JWT Bearer authentication
+builder.Services.AddAuthentication(options =>
+    {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
+    .AddJwtBearer(options =>
+    {
+        options.RequireHttpsMetadata = false; // Set to true in production
+        options.SaveToken = true;
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true, // Validate the secret key
+            IssuerSigningKey = new SymmetricSecurityKey(key),
+
+            ValidateIssuer = false, // Set to true if you have a valid issuer
+            ValidIssuer = jwtSettings["Issuer"], // Load Issuer from configuration
+
+            ValidateAudience = false, // Set to true if you have a valid audience
+            ValidAudience = jwtSettings["Audience"], // Load Audience from configuration
+
+            ValidateLifetime = true, // Validate token expiry
+            ClockSkew = TimeSpan.FromSeconds(180) // For Clock Drifting
+        };
+    });
 
 builder.Services.AddCors(options =>
 {
@@ -43,8 +76,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthentication();
-app.UseAuthorization();
+
 
 app.MapControllers();
 
@@ -54,5 +86,7 @@ app.MapHub<ChatStreamingHub>("/chatStreamingHub");
 
 app.UseCors("AllowSpecificOrigin");
 
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.Run();
