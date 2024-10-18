@@ -46,7 +46,7 @@ public class LoginController : ControllerBase
             return validPassword;
         }
         return false;
-    }
+     }
 
     private string GenerateJwtToken(string username)
     {
