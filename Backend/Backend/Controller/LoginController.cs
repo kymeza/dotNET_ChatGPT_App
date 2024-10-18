@@ -1,6 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Backend.Domain.Helpers;
 using Backend.Domain.Repositories.AppDbContext;
 using Backend.Models;
 using Backend.Models.Config;
@@ -42,7 +43,7 @@ public class LoginController : ControllerBase
         var userInDb = _appDbContext.Users.FirstOrDefault(u => u.Username == user.Username);
         if (userInDb != null)
         {
-            bool validPassword = userInDb.Password == user.Password;
+            bool validPassword = Argon2PasswordHasher.VerifyHashedPassword(userInDb.Password, user.Password);
             return validPassword;
         }
         return false;
