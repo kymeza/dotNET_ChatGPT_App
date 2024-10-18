@@ -1,4 +1,5 @@
-﻿using Backend.Domain.Repositories.AppDbContext;
+﻿using Backend.Domain.Helpers;
+using Backend.Domain.Repositories.AppDbContext;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Controller;
@@ -17,6 +18,7 @@ public class UserController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] User user)
     {
+        user.Password = Argon2PasswordHasher.HashPassword(user.Password);
         _appDbContext.Users.Add(user);
         _appDbContext.SaveChanges();
         
