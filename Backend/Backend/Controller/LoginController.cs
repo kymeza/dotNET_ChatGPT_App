@@ -1,6 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Backend.Domain.Repositories.AppDbContext;
 using Backend.Models;
 using Backend.Models.Config;
 using Microsoft.AspNetCore.Mvc;
@@ -12,12 +13,13 @@ namespace Backend.Controller;
 [Route("api/login")]
 public class LoginController : ControllerBase
 {
+    private readonly AppDbContext _appDbContext;
+    private readonly JwtSettings _jwtSettings;
 
-    private JwtSettings _jwtSettings;
-
-    public LoginController(JwtSettings jwtSettings)
+    public LoginController(JwtSettings jwtSettings, AppDbContext appDbContext)
     {
         _jwtSettings = jwtSettings;
+        _appDbContext = appDbContext;
     }
 
     [HttpPost]
@@ -37,8 +39,13 @@ public class LoginController : ControllerBase
 
     private bool IsValidUser(UserLoginModel user)
     {
-        // Replace this with your own validation logic (e.g., database check)
-        return user.Username == "testuser" && user.Password == "password";
+        var userInDb = _appDbContext.Users.FirstOrDefault(u => u.Username == user.Username);
+        if (userInDb != null)
+        {
+            bool validPassword = userInDb.Password == user.Password;
+            return validPassword;
+        }
+        return false;
     }
 
     private string GenerateJwtToken(string username)

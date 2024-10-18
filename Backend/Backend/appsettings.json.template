@@ -1,7 +1,15 @@
 {
   "OpenAi" : {
-        "ApiKey" : ""
-    },
+    "ApiKey" : ""
+  },
+  "Jwt": {
+     "SecretKey": "",
+     "Issuer": "",
+     "Audience": ""
+  },
+    "ConnectionStrings": {
+    "AppDbContext": ""
+  },
   "Serilog": {
     "MinimumLevel": {
       "Default": "Information",
