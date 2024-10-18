@@ -31,11 +31,15 @@ public class LoginController : ControllerBase
         if (IsValidUser(user))
         {
             var token = GenerateJwtToken(user.Username);
+
+            // Store the token in the session
+            HttpContext.Session.SetString("JWToken", token);
+            
             return Ok(new { token });
         }
         else
         {
-            return Unauthorized();
+            return Unauthorized("Invalid Credentials");
         }
     }
 

@@ -18,8 +18,7 @@ public static class Argon2PasswordHasher
             Lanes = 4,
             Password = System.Text.Encoding.UTF8.GetBytes(password),
             Salt = RandomNumberGenerator.GetBytes(16),
-            HashLength = 20
-                
+            HashLength = 32 
         };
         var argon2A = new Argon2(config);
         using (SecureArray<byte> hashA = argon2A.Hash())

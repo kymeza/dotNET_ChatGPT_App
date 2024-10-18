@@ -14,6 +14,12 @@ public class User
     [Required]
     [MaxLength(256)]
     public string Password { get; set; }
+    
+    [MaxLength(256)]
+    public string? Email { get; set; }
+    
+    [MaxLength(Int16.MaxValue)]
+    public string? AboutMe { get; set; }
         
     // You can add more fields like Email, CreatedDate, etc.
 }
