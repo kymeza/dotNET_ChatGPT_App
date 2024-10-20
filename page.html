@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Info Demo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>User Info Demo</h1>
+    <label for="username">Enter Username:</label>
+    <input type="text" id="username" placeholder="Username">
+    <button id="fetchButton">Fetch User Info</button>
+
+    <div id="result"></div>
+
+    <script>
+        document.getElementById("fetchButton").addEventListener("click", function () {
+            const token = "your-jwt-token-here";  // Replace token
+            const username = document.getElementById("username").value;
+
+            if (!username) {
+                document.getElementById("result").innerHTML = "<p class='error'>Please enter a username.</p>";
+                return;
+            }
+
+            // API URL (adjust accordingly)
+            const apiUrl = `https://localhost:7021/api/users/${username}`;
+
+            // Fetch user info from the API
+            fetch(apiUrl, {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${token}`,  // Bearer token authentication
+                    "Content-Type": "application/json"
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error(`User not found or error occurred (status: ${response.status})`);
+                }
+            })
+            .then(data => {
+                // Display the result in the page
+                document.getElementById("result").innerHTML = `
+                    <h3>User Info:</h3>
+                    <p><strong>ID:</strong> ${data.id}</p>
+                    <p><strong>Username:</strong> ${data.username}</p>
+                    <p><strong>Email:</strong> ${data.email ? data.email : "Not provided"}</p>
+                    <p><strong>About Me:</strong> ${data.aboutMe ? data.aboutMe : "Not provided"}</p>
+                `;
+            })
+            .catch(error => {
+                document.getElementById("result").innerHTML = `<p class='error'>Error: ${error.message}</p>`;
+            });
+        });
+    </script>
+
+</body>
+</html>
