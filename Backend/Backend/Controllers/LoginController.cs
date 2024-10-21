@@ -1,6 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Backend.Domain.Helpers;
 using Backend.Domain.Repositories.AppDbContext;
 using Backend.Models;
 using Backend.Models.Config;
@@ -14,14 +15,14 @@ namespace Backend.Controllers;
 public class LoginController : ControllerBase
 {
     private readonly ILogger<LoginController> _logger;
-    private readonly AppDbContext _context;
+    private readonly AppDbContext _appDbContext;
     private readonly JwtSettings _jwtSettings;
 
-    public LoginController(ILogger<LoginController> logger, JwtSettings jwtSettings, AppDbContext context)
+    public LoginController(ILogger<LoginController> logger, JwtSettings jwtSettings, AppDbContext appDbContext)
     {
         _logger = logger;
         _jwtSettings = jwtSettings;
-        _context = context;
+        _appDbContext = appDbContext;
     }
 
     [HttpPost]
@@ -31,10 +32,6 @@ public class LoginController : ControllerBase
         if (IsValidUser(user))
         {
             var token = GenerateJwtToken(user.Username);
-
-            // Store the token in the session
-            HttpContext.Session.SetString("JWToken", token);
-            
             return Ok(new { token });
         }
         else
@@ -42,22 +39,15 @@ public class LoginController : ControllerBase
             return Unauthorized("Invalid Credentials");
         }
     }
-
+    
     private bool IsValidUser(UserLoginModel user)
     {
-        // Replace this with your own validation logic (e.g., database check)
-        return user.Username == "testuser" && user.Password == "password";
-    }
-    
-    private bool IsValidUserFromDb(UserLoginModel user)
-    {
-        // Replace this with your own validation logic (e.g., database check)
-        var userFromDb = _context.Users.FirstOrDefault(u => u.Username == user.Username);
-        if (userFromDb != null)
+        var userInDb = _appDbContext.Users.FirstOrDefault(u => u.Username == user.Username);
+        if (userInDb != null)
         {
-            return userFromDb.Password == "password";
+            bool validPassword = Argon2PasswordHasher.VerifyHashedPassword(userInDb.Password, user.Password);
+            return validPassword;
         }
-
         return false;
     }
 

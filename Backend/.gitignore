@@ -447,5 +447,3 @@ testem.log
 Thumbs.db
 
 /.angular
-Backend/Backend/database.db-shm
-Backend/Backend/database.db-wal
