@@ -31,7 +31,7 @@
 
     <script>
         document.getElementById("fetchButton").addEventListener("click", function () {
-            const token = "your-jwt-token-here";  // Replace token
+            const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImttZXphIiwiUGVybWlzc2lvbiI6IkNoYXQiLCJuYmYiOjE3Mjk1OTg1NDksImV4cCI6MTcyOTYwMjE0OSwiaWF0IjoxNzI5NTk4NTQ5fQ.Mz658qJU_rA4fQhEI2ABQKZQ8ynTnak3qj6vD5ZMd_M";  // Replace token
             const username = document.getElementById("username").value;
 
             if (!username) {
@@ -58,18 +58,34 @@
                 }
             })
             .then(data => {
-                // Display the result in the page
-                document.getElementById("result").innerHTML = `
-                    <h3>User Info:</h3>
-                    <p><strong>ID:</strong> ${data.id}</p>
-                    <p><strong>Username:</strong> ${data.username}</p>
-                    <p><strong>Email:</strong> ${data.email ? data.email : "Not provided"}</p>
-                    <p><strong>About Me:</strong> ${data.aboutMe ? data.aboutMe : "Not provided"}</p>
-                `;
-            })
-            .catch(error => {
-                document.getElementById("result").innerHTML = `<p class='error'>Error: ${error.message}</p>`;
-            });
+             // Function to escape HTML special characters
+            function escapeHtml(text) {
+                // Ensure the input is a string, or else convert it to a string
+                if (typeof text !== "string") {
+                    text = String(text || "");  // Handle null or undefined by converting to empty string
+                }
+                return text.replace(/[&<>"']/g, function (match) {
+                    const escape = {
+                        '&': '&amp;',
+                        '<': '&lt;',
+                        '>': '&gt;',
+                        '"': '&quot;',
+                        "'": '&#39;'
+                    };
+                    return escape[match];
+                });
+            }
+
+            // Display the result in the page with escaped values
+            document.getElementById("result").innerHTML = `
+                <h3>User Info:</h3>
+                <p><strong>ID:</strong> ${escapeHtml(data.id)}</p>
+                <p><strong>Username:</strong> ${escapeHtml(data.username)}</p>
+                <p><strong>Email:</strong> ${data.email ? escapeHtml(data.email) : "Not provided"}</p>
+                <p><strong>About Me:</strong> ${data.aboutMe ? escapeHtml(data.aboutMe) : "Not provided"}</p>
+            `;
+        })
+
         });
     </script>
 
