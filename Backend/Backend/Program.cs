@@ -37,7 +37,30 @@ builder.Services.AddAuthentication(options =>
             ValidateLifetime = true, // Validate token expiry
             ClockSkew = TimeSpan.FromSeconds(180) // For Clock Drifting
         };
+        // Enable the token to be passed in the SignalR query string
+        options.Events = new JwtBearerEvents
+        {
+            OnMessageReceived = context =>
+            {
+                var accessToken = context.Request.Query["access_token"];
+
+                // If the request is for SignalR, extract the token
+                var path = context.HttpContext.Request.Path;
+                if (!string.IsNullOrEmpty(accessToken) &&
+                    (path.StartsWithSegments("/chatStreamingHub")))
+                {
+                    context.Token = accessToken;
+                }
+
+                return Task.CompletedTask;
+            }
+        };
     });
+
+builder.Services.AddAuthorizationBuilder()
+    .AddPolicy("RequireChatPermission", policy =>
+        policy.RequireClaim("Permission", "Chat"));
+
 
 builder.Services.AddCors(options =>
 {

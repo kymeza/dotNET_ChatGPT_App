@@ -404,3 +404,4 @@ FodyWeavers.xsd
 /Frontend/.idea
 /Backend/Backend/appsettings.json
 /.idea/
+AngularFrontend/.env

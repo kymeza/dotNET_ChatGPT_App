@@ -5,11 +5,13 @@ using System.Text.Json;
 using System.Threading.Channels;
 using Backend.Models;
 using Backend.Models.Config;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using OpenAI.Chat;
 
 namespace Backend.Hubs;
 
+[Authorize("RequireChatPermission")]
 public class ChatStreamingHub : Hub
 {
     private static ConcurrentDictionary<string, ChatClient> _clients = new();
