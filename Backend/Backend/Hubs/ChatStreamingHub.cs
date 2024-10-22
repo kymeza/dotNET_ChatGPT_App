@@ -11,7 +11,7 @@ using OpenAI.Chat;
 
 namespace Backend.Hubs;
 
-[Authorize("RequireChatPermission")]
+[Authorize]
 public class ChatStreamingHub : Hub
 {
     private static ConcurrentDictionary<string, ChatClient> _clients = new();
