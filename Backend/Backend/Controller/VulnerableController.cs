@@ -47,7 +47,7 @@ public class VulnerableController : ControllerBase
                     FROM 
                         Products
                     WHERE
-                        IdArticulo = '{id}'"; // This is insecure!
+                        ""ID Articulo"" = '{id}'"; // This is insecure!
         var product = await _dbConnection.QueryAsync<ProductDto>(query);
         return Ok(product);
 
