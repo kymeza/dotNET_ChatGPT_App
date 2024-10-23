@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Backend.Domain.Repositories.SuperTiendaDbContext;
+using Backend.Models.Dtos.SuperTienda;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,7 +24,7 @@ public class ProductsController : ControllerBase
 
     // GET: api/Products
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
+    public async Task<ActionResult<IEnumerable<ProductDto>>> GetProducts()
     {
         if (_context.Products == null)
         {
@@ -31,13 +32,13 @@ public class ProductsController : ControllerBase
         }
 
         var products = await _context.Products.ToListAsync();
-        //var productsDto = _mapper.Map<List<Product>>(products);
-        return Ok(products);
+        var productsDto = _mapper.Map<List<ProductDto>>(products);
+        return Ok(productsDto);
     }
 
     // GET: api/Products/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<Product>> GetProduct(string id)
+    public async Task<ActionResult<ProductDto>> GetProduct(string id)
     {
         if (_context.Products == null)
         {
@@ -51,9 +52,9 @@ public class ProductsController : ControllerBase
             return NotFound();
         }
 
-        //var productDto = _mapper.Map<Product>(product);
+        var productDto = _mapper.Map<ProductDto>(product);
 
-        return product;
+        return productDto;
     }
 
     // PUT: api/Products/5
