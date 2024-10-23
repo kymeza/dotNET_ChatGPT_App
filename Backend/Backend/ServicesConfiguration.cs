@@ -37,6 +37,8 @@ public static class ServicesConfiguration
             var connectionString = config.GetConnectionString("SuperTiendaDbContext");
             return new SqliteConnection(connectionString);
         });
+        
+        services.AddAutoMapper(typeof(Program));
 
         // Clients
 

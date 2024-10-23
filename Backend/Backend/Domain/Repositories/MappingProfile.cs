@@ -1,6 +1,8 @@
-﻿namespace Backend.Domain.Repositories;
+﻿using AutoMapper;
 
-public class MappingProfile
+namespace Backend.Domain.Repositories;
+
+public class MappingProfile : Profile
 {
     
 }
