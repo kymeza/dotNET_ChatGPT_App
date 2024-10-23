@@ -18,7 +18,9 @@
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="AutoMapper" Version="13.0.1" />
         <PackageReference Include="Azure.AI.OpenAI" Version="2.0.0-beta.6" />
+        <PackageReference Include="Dapper" Version="2.1.35" />
         <PackageReference Include="Isopoh.Cryptography.Argon2" Version="2.0.0" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.10" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.10" />
@@ -45,6 +47,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Domain\Repositories\SuperTiendaDbContext\" />
       <Folder Include="Domain\Services\" />
     </ItemGroup>
 
