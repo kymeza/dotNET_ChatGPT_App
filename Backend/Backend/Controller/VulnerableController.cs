@@ -41,7 +41,7 @@ public class VulnerableController : ControllerBase
     [HttpGet("products/{id}")]
     public async Task<ActionResult<ProductDto>> GetProduct(string id)
     {
-        var query = $@"SELECT 
+        var query = @"SELECT 
                         ""ID Articulo"" AS IdArticulo, 
                         ""ID Sub-Categoria"" AS IdSubCategoria, 
                         ""Producto"" AS Producto, 
@@ -49,10 +49,11 @@ public class VulnerableController : ControllerBase
                         ""CostoUnitario"" AS CostoUnitario
                     FROM 
                         Products
-                    WHERE ""ID Articulo"" = '{id}'
+                    WHERE ""ID Articulo"" = @idArticulo
                         ";
-        var product = await _dbConnection.QueryAsync<ProductDto>(query);
+        
+        var product = await _dbConnection.QueryAsync<ProductDto>(query, new { idArticulo = id });
         return Ok(product);
-    }
+    } 
     
 }
