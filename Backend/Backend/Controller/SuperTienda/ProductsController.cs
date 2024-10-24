@@ -11,10 +11,10 @@ namespace Backend.Controller.SuperTienda;
 public class ProductsController : ControllerBase
 {
     private readonly ILogger<ProductsController> _logger;
-    private readonly SuperTiendaSqliteContext _context;
+    private readonly SuperTiendaDbContext _context;
     private readonly IMapper _mapper;
     
-    public ProductsController(ILogger<ProductsController> logger, SuperTiendaSqliteContext dbContext, IMapper mapper)
+    public ProductsController(ILogger<ProductsController> logger, SuperTiendaDbContext dbContext, IMapper mapper)
     {
         _logger = logger;
         _context = dbContext;

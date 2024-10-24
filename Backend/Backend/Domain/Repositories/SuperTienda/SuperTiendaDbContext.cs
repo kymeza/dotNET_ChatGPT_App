@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Domain.Repositories.SuperTienda;
 
-public partial class SuperTiendaSqliteContext : DbContext
+public partial class SuperTiendaDbContext : DbContext
 {
-    public SuperTiendaSqliteContext()
+    public SuperTiendaDbContext()
     {
     }
 
-    public SuperTiendaSqliteContext(DbContextOptions<SuperTiendaSqliteContext> options)
+    public SuperTiendaDbContext(DbContextOptions<SuperTiendaDbContext> options)
         : base(options)
     {
     }

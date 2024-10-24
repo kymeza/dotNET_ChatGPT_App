@@ -1,6 +1,8 @@
-﻿using Backend.Domain.Repositories.AppDbContext;
+﻿using System.Data;
+using Backend.Domain.Repositories.AppDbContext;
 using Backend.Domain.Repositories.SuperTienda;
 using Backend.Models.Config;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
@@ -26,8 +28,17 @@ public static class ServicesConfiguration
         services.AddDbContext<IAppDbContext, AppDbContext>(options =>
             options.UseSqlite(configuration.GetConnectionString("AppDbContext")));
         
-        services.AddDbContext<SuperTiendaSqliteContext>(options =>
+        services.AddDbContext<SuperTiendaDbContext>(options =>
             options.UseSqlite(configuration.GetConnectionString("SuperTiendaDbContext")));
+
+        services.AddScoped<IDbConnection>(sp =>
+        {
+            var config = sp.GetRequiredService<IConfiguration>();
+            var connectionString = config.GetConnectionString("SuperTiendaDbContext");
+            return new SqliteConnection(connectionString);
+        });
+        
+        services.AddAutoMapper(typeof(Program));
 
         // Clients
 
