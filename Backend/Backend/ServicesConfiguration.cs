@@ -1,4 +1,5 @@
 ﻿using Backend.Domain.Repositories.AppDbContext;
+using Backend.Domain.Repositories.SuperTienda;
 using Backend.Models.Config;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -24,6 +25,9 @@ public static class ServicesConfiguration
 
         services.AddDbContext<IAppDbContext, AppDbContext>(options =>
             options.UseSqlite(configuration.GetConnectionString("AppDbContext")));
+        
+        services.AddDbContext<SuperTiendaSqliteContext>(options =>
+            options.UseSqlite(configuration.GetConnectionString("SuperTiendaDbContext")));
 
         // Clients
 
