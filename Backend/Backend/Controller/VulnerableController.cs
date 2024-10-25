@@ -17,7 +17,7 @@ public class VulnerableController : ControllerBase
         _logger = logger;
         _dbConnection = dbConnection;
     }
-    
+
     [HttpGet("products")]
     public async Task<IActionResult> GetProducts()
     {
@@ -34,7 +34,7 @@ public class VulnerableController : ControllerBase
         var products = await _dbConnection.QueryAsync<ProductDto>(query);
         return Ok(products);
     }
-    
+
     [HttpGet("products/{id}")]
     public async Task<IActionResult> GetProducts(string id)
     {
@@ -48,8 +48,42 @@ public class VulnerableController : ControllerBase
                         Products
                     WHERE
                         ""ID Articulo"" = @idArticulo"; // This is insecure!
-        var product = await _dbConnection.QueryAsync<ProductDto>(query, new {idArticulo = id} );
+        var product = await _dbConnection.QueryAsync<ProductDto>(query, new { idArticulo = id });
         return Ok(product);
-
     }
+
+    [HttpPost("upload")]
+    public async Task<IActionResult> Upload([FromForm] IFormFile file, [FromForm] string fileName)
+    {
+        if (file == null || file.Length == 0)
+        {
+            return BadRequest("No file provided.");
+        }
+        
+        var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Uploads");
+        
+        var extension = Path.GetExtension(file.FileName);
+        
+        fileName = fileName + extension;
+        
+        var fullPath = Path.Combine(uploadPath, fileName);
+        
+        try
+        {
+            // Save file to disk
+            using (var stream = new FileStream(fullPath, FileMode.Create, FileAccess.Write))
+            {
+                await file.CopyToAsync(stream);
+            }
+        }
+        catch (Exception ex)
+        {
+            // Handle exceptions, such as access denied, path not found, etc.
+            return StatusCode(500, "Internal Server Error: " + ex.Message);
+        }
+
+        return Ok("File uploaded successfully.");
+    }
+    
 }
+
