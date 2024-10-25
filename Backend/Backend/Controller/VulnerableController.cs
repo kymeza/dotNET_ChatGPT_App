@@ -59,31 +59,55 @@ public class VulnerableController : ControllerBase
         {
             return BadRequest("No file provided.");
         }
-        
+
+        // Generar un GUID para el archivo
+        var fileId = Guid.NewGuid().ToString();
+    
+        // Obtener y validar la extensión del archivo
+        var extension = Path.GetExtension(file.FileName).ToLower();
+        var allowedExtensions = new[] { ".jpg", ".png", ".pdf", ".txt" };
+        if (!allowedExtensions.Contains(extension))
+        {
+            return BadRequest("Invalid file type.");
+        }
+
+        // Generar el nombre final del archivo
+        fileName = fileId + extension;
+    
+        // Definir la ruta segura para la subida
         var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Uploads");
-        
-        var extension = Path.GetExtension(file.FileName);
-        
-        fileName = fileName + extension;
-        
+        if (!Directory.Exists(uploadPath))
+        {
+            Directory.CreateDirectory(uploadPath);
+        }
+
         var fullPath = Path.Combine(uploadPath, fileName);
-        
+        if (!fullPath.StartsWith(uploadPath))
+        {
+            return BadRequest("Invalid file path.");
+        }
+
+        // Guardar el archivo
         try
         {
-            // Save file to disk
             using (var stream = new FileStream(fullPath, FileMode.Create, FileAccess.Write))
             {
                 await file.CopyToAsync(stream);
             }
+            
+        }
+        catch (UnauthorizedAccessException)
+        {
+            return StatusCode(403, "You do not have permission to save this file.");
         }
         catch (Exception ex)
         {
-            // Handle exceptions, such as access denied, path not found, etc.
             return StatusCode(500, "Internal Server Error: " + ex.Message);
         }
 
         return Ok("File uploaded successfully.");
     }
+
     
 }
 
