@@ -24,7 +24,7 @@ export class LoginComponent {
         const token = response?.token;
         if (token) {
           this.authService.storeToken(token);
-            
+          this.router.navigate(['/chat']);
         }
       },
       error: () => {

@@ -11,7 +11,7 @@ import { CommandService } from './command.service';
   styleUrls: ['./command.component.css'],
   imports: [FormsModule, CommonModule]
 })
-export class CommandRunnerComponent {
+export class CommandComponent {
     command: string = '';
     output: string = '';
         
