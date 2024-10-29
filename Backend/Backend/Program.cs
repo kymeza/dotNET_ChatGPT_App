@@ -1,9 +1,9 @@
-using System.Text;
 using Backend;
 using Backend.Hubs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,52 +15,52 @@ var jwtSettings = builder.Configuration.GetSection("Jwt");
 var key = Encoding.ASCII.GetBytes(jwtSettings["SecretKey"]);
 // Add JWT Bearer authentication
 builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-.AddJwtBearer(options =>
-{
-    options.RequireHttpsMetadata = false; // Set to true in production
-    options.SaveToken = true;
-    options.TokenValidationParameters = new TokenValidationParameters
     {
-        ValidateIssuerSigningKey = true, // Validate the secret key
-        IssuerSigningKey = new SymmetricSecurityKey(key),
-        
-        ValidateIssuer = false, // Set to true if you have a valid issuer
-        ValidIssuer = jwtSettings["Issuer"], // Load Issuer from configuration
-        
-        ValidateAudience = false, // Set to true if you have a valid audience
-        ValidAudience = jwtSettings["Audience"], // Load Audience from configuration
-        
-        ValidateLifetime = true, // Validate token expiry
-        ClockSkew = TimeSpan.FromSeconds(180) // For Clock Drifting
-    };
-    
-    // Enable the token to be passed in the SignalR query string
-    options.Events = new JwtBearerEvents
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
+    .AddJwtBearer(options =>
     {
-        OnMessageReceived = context =>
+        options.RequireHttpsMetadata = false; // Set to true in production
+        options.SaveToken = true;
+        options.TokenValidationParameters = new TokenValidationParameters
         {
-            var accessToken = context.Request.Query["access_token"];
+            ValidateIssuerSigningKey = true, // Validate the secret key
+            IssuerSigningKey = new SymmetricSecurityKey(key),
 
-            // If the request is for SignalR, extract the token
-            var path = context.HttpContext.Request.Path;
-            if (!string.IsNullOrEmpty(accessToken) &&
-                (path.StartsWithSegments("/chatStreamingHub")))
+            ValidateIssuer = false, // Set to true if you have a valid issuer
+            ValidIssuer = jwtSettings["Issuer"], // Load Issuer from configuration
+
+            ValidateAudience = false, // Set to true if you have a valid audience
+            ValidAudience = jwtSettings["Audience"], // Load Audience from configuration
+
+            ValidateLifetime = true, // Validate token expiry
+            ClockSkew = TimeSpan.FromSeconds(180) // For Clock Drifting
+        };
+        // Enable the token to be passed in the SignalR query string
+        options.Events = new JwtBearerEvents
+        {
+            OnMessageReceived = context =>
             {
-                context.Token = accessToken;
-            }
+                var accessToken = context.Request.Query["access_token"];
 
-            return Task.CompletedTask;
-        }
-    };
-});
+                // If the request is for SignalR, extract the token
+                var path = context.HttpContext.Request.Path;
+                if (!string.IsNullOrEmpty(accessToken) &&
+                    (path.StartsWithSegments("/chatStreamingHub")))
+                {
+                    context.Token = accessToken;
+                }
+
+                return Task.CompletedTask;
+            }
+        };
+    });
 
 builder.Services.AddAuthorizationBuilder()
     .AddPolicy("RequireChatPermission", policy =>
         policy.RequireClaim("Permission", "Chat"));
+
 
 builder.Services.AddCors(options =>
 {
@@ -72,7 +72,6 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddControllers();
-
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -99,6 +98,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+
 
 app.MapControllers();
 

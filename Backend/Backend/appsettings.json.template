@@ -3,9 +3,13 @@
     "ApiKey" : ""
   },
   "Jwt": {
-    "SecretKey": "",
-    "Issuer": "",
-    "Audience": ""
+     "SecretKey": "",
+     "Issuer": "",
+     "Audience": ""
+  },
+    "ConnectionStrings": {
+    "AppDbContext": "",
+    "SuperTiendaDbContext" : ""
   },
   "Serilog": {
     "MinimumLevel": {

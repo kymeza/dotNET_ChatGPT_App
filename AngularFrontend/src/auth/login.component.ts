@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common'; // Import CommonModule for ngClass and other common directives
 import { FormsModule } from '@angular/forms';
-
 import { AuthService } from './auth.service';
 import { Router } from '@angular/router';
 
@@ -25,7 +24,7 @@ export class LoginComponent {
         const token = response?.token;
         if (token) {
           this.authService.storeToken(token);
-          this.router.navigate(['/chat']);  // Redirect after successful login
+            
         }
       },
       error: () => {

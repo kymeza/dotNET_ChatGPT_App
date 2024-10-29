@@ -1,0 +1,113 @@
+﻿using System.Data;
+using Backend.Models.Dtos.SuperTienda;
+using Dapper;
+using Microsoft.AspNetCore.Mvc;
+
+namespace Backend.Controller;
+
+[ApiController]
+[Route("api/vulnerable")]
+public class VulnerableController : ControllerBase
+{
+    private readonly ILogger<VulnerableController> _logger;
+    private readonly IDbConnection _dbConnection;
+
+    public VulnerableController(ILogger<VulnerableController> logger, IDbConnection dbConnection)
+    {
+        _logger = logger;
+        _dbConnection = dbConnection;
+    }
+
+    [HttpGet("products")]
+    public async Task<IActionResult> GetProducts()
+    {
+        var query = @"SELECT 
+                        ""ID Articulo"" AS IdArticulo, 
+                        ""ID Sub-Categoria"" AS IdSubCategoria, 
+                        ""Producto"" AS Producto, 
+                        ""PrecioUnitario"" AS PrecioUnitario, 
+                        ""CostoUnitario"" AS CostoUnitario
+                    FROM 
+                        Products
+                    LIMIT 10;
+                        ";
+        var products = await _dbConnection.QueryAsync<ProductDto>(query);
+        return Ok(products);
+    }
+
+    [HttpGet("products/{id}")]
+    public async Task<IActionResult> GetProducts(string id)
+    {
+        var query = @"SELECT 
+                        ""ID Articulo"" AS IdArticulo, 
+                        ""ID Sub-Categoria"" AS IdSubCategoria, 
+                        ""Producto"" AS Producto, 
+                        ""PrecioUnitario"" AS PrecioUnitario, 
+                        ""CostoUnitario"" AS CostoUnitario
+                    FROM 
+                        Products
+                    WHERE
+                        ""ID Articulo"" = @idArticulo"; // This is insecure!
+        var product = await _dbConnection.QueryAsync<ProductDto>(query, new { idArticulo = id });
+        return Ok(product);
+    }
+
+    [HttpPost("upload")]
+    public async Task<IActionResult> Upload([FromForm] IFormFile file, [FromForm] string fileName)
+    {
+        if (file == null || file.Length == 0)
+        {
+            return BadRequest("No file provided.");
+        }
+
+        // Generar un GUID para el archivo
+        var fileId = Guid.NewGuid().ToString();
+    
+        // Obtener y validar la extensión del archivo
+        var extension = Path.GetExtension(file.FileName).ToLower();
+        var allowedExtensions = new[] { ".jpg", ".png", ".pdf", ".txt" };
+        if (!allowedExtensions.Contains(extension))
+        {
+            return BadRequest("Invalid file type.");
+        }
+
+        // Generar el nombre final del archivo
+        fileName = fileId + extension;
+    
+        // Definir la ruta segura para la subida
+        var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Uploads");
+        if (!Directory.Exists(uploadPath))
+        {
+            Directory.CreateDirectory(uploadPath);
+        }
+
+        var fullPath = Path.Combine(uploadPath, fileName);
+        if (!fullPath.StartsWith(uploadPath))
+        {
+            return BadRequest("Invalid file path.");
+        }
+
+        // Guardar el archivo
+        try
+        {
+            using (var stream = new FileStream(fullPath, FileMode.Create, FileAccess.Write))
+            {
+                await file.CopyToAsync(stream);
+            }
+            
+        }
+        catch (UnauthorizedAccessException)
+        {
+            return StatusCode(403, "You do not have permission to save this file.");
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, "Internal Server Error: " + ex.Message);
+        }
+
+        return Ok("File uploaded successfully.");
+    }
+
+    
+}
+
