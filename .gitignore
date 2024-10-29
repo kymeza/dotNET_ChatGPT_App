@@ -405,3 +405,5 @@ FodyWeavers.xsd
 /Backend/Backend/appsettings.json
 /.idea/
 AngularFrontend/.env
+
+/Backend/Backend/wwwroot/Uploads/
