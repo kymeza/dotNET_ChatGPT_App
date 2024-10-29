@@ -9,7 +9,7 @@ namespace Backend.Controller;
 
 [ApiController]
 [Route("api/vulnerable")]
-[Authorize]
+//[Authorize]
 public class VulnerableController : ControllerBase
 {
     private readonly ILogger<VulnerableController> _logger;
@@ -61,18 +61,43 @@ public class VulnerableController : ControllerBase
     [HttpPost("upload")]
     public async Task<IActionResult> UploadFile([FromForm] IFormFile file, [FromForm] string fileName)
     {
+        // Recomendaciones
+        // 1. No permitir que el usuario maneje el nombre del archivo
+        // 2. Ignorar el nombre de archivo original y generar un GUID
+        // 3. No permitir caracteres especiales usando un RegEx
+        // 4. VALIDAR EL HEADER DEL CONTENT TYPE DEL ARCHIVO
+        
+        
         if (file == null || file.Length == 0)
         {
             return BadRequest("No file provided.");
         }
+
+        // Generar un GUID para el archivo
+        var fileId = Guid.NewGuid().ToString();
+
+        // Obtener y validar la extensión del archivo
+        var extension = Path.GetExtension(file.FileName).ToLower();
+        var allowedExtensions = new[] { ".jpg", ".png", ".pdf", ".txt" };
+        if (!allowedExtensions.Contains(extension))
+        {
+            return BadRequest("Invalid file type.");
+        }
+        
+        // Generar el nombre final del archivo
+        fileName = fileId + extension;
         
         var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Uploads");
-        
-        var extension = Path.GetExtension(file.FileName);
-        
-        fileName = fileName + extension;
-        
+        if (!Directory.Exists(uploadPath))
+        {
+            Directory.CreateDirectory(uploadPath);
+        }
+
         var fullPath = Path.Combine(uploadPath, fileName);
+        if (!fullPath.StartsWith(uploadPath))
+        {
+            return BadRequest("Invalid file path.");
+        }
         
         try
         {
