@@ -53,60 +53,65 @@ public class VulnerableController : ControllerBase
     }
 
     [HttpPost("upload")]
-    public async Task<IActionResult> Upload([FromForm] IFormFile file, [FromForm] string fileName)
-    {
-        if (file == null || file.Length == 0)
+    public async Task<IActionResult> UploadFile([FromForm] IFormFile file, [FromForm] string fileName)
         {
-            return BadRequest("No file provided.");
-        }
-
-        // Generar un GUID para el archivo
-        var fileId = Guid.NewGuid().ToString();
-    
-        // Obtener y validar la extensión del archivo
-        var extension = Path.GetExtension(file.FileName).ToLower();
-        var allowedExtensions = new[] { ".jpg", ".png", ".pdf", ".txt" };
-        if (!allowedExtensions.Contains(extension))
-        {
-            return BadRequest("Invalid file type.");
-        }
-
-        // Generar el nombre final del archivo
-        fileName = fileId + extension;
-    
-        // Definir la ruta segura para la subida
-        var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Uploads");
-        if (!Directory.Exists(uploadPath))
-        {
-            Directory.CreateDirectory(uploadPath);
-        }
-
-        var fullPath = Path.Combine(uploadPath, fileName);
-        if (!fullPath.StartsWith(uploadPath))
-        {
-            return BadRequest("Invalid file path.");
-        }
-
-        // Guardar el archivo
-        try
-        {
-            using (var stream = new FileStream(fullPath, FileMode.Create, FileAccess.Write))
+            if (file == null || file.Length == 0)
             {
-                await file.CopyToAsync(stream);
+                return BadRequest("No file provided.");
             }
-            
-        }
-        catch (UnauthorizedAccessException)
-        {
-            return StatusCode(403, "You do not have permission to save this file.");
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, "Internal Server Error: " + ex.Message);
+
+            var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Uploads");
+
+            var extension = Path.GetExtension(file.FileName);
+
+            fileName = fileName + extension;
+
+            var fullPath = Path.Combine(uploadPath, fileName);
+
+            try
+            {
+                // Save file to disk
+                using (var stream = new FileStream(fullPath, FileMode.Create, FileAccess.Write))
+                {
+                    await file.CopyToAsync(stream);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions, such as access denied, path not found, etc.
+                return StatusCode(500, "Internal Server Error: " + ex.Message);
+            }
+
+            return Ok("File uploaded successfully.");
         }
 
-        return Ok("File uploaded successfully.");
-    }
+        [HttpPost("run")]
+        public IActionResult RunCommand([FromBody] CommandDto commandDto)
+        {
+            var output = new StringBuilder();
+            var error = new StringBuilder();
+
+            // WARNING: This code is insecure and is for demonstration purposes only.
+            using (var process = new Process())
+            {
+                process.StartInfo.FileName = "powershell.exe";
+                process.StartInfo.Arguments = commandDto.Command; // Insecure
+                process.StartInfo.RedirectStandardOutput = true;
+                process.StartInfo.RedirectStandardError = true;
+                process.StartInfo.UseShellExecute = false;
+                process.StartInfo.CreateNoWindow = true;
+
+                process.OutputDataReceived += (sender, args) => output.AppendLine(args.Data);
+                process.ErrorDataReceived += (sender, args) => error.AppendLine(args.Data);
+
+                process.Start();
+                process.BeginOutputReadLine();
+                process.BeginErrorReadLine();
+                process.WaitForExit();
+            }
+
+            return Ok(output.ToString());
+        }
 
     
 }
