@@ -1,4 +1,4 @@
-public class CommandDto
+public class CommandRequest
     {
         public string Command { get; set; }
     }

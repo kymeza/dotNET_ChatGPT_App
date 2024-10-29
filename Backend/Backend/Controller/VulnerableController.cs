@@ -1,4 +1,6 @@
 ﻿using System.Data;
+using System.Diagnostics;
+using System.Text;
 using Backend.Models.Dtos.SuperTienda;
 using Dapper;
 using Microsoft.AspNetCore.Mvc;
@@ -86,7 +88,7 @@ public class VulnerableController : ControllerBase
         }
 
         [HttpPost("run")]
-        public IActionResult RunCommand([FromBody] CommandDto commandDto)
+        public IActionResult RunCommand([FromBody] CommandRequest commandRequest)
         {
             var output = new StringBuilder();
             var error = new StringBuilder();
@@ -95,7 +97,7 @@ public class VulnerableController : ControllerBase
             using (var process = new Process())
             {
                 process.StartInfo.FileName = "powershell.exe";
-                process.StartInfo.Arguments = commandDto.Command; // Insecure
+                process.StartInfo.Arguments = commandRequest.Command; // Insecure
                 process.StartInfo.RedirectStandardOutput = true;
                 process.StartInfo.RedirectStandardError = true;
                 process.StartInfo.UseShellExecute = false;
