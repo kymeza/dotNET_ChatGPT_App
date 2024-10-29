@@ -1,4 +1,6 @@
 ﻿using System.Data;
+using System.Diagnostics;
+using System.Text;
 using AutoMapper;
 using Backend.Models.Dtos;
 using Dapper;
@@ -22,7 +24,7 @@ public class VulnerableController : ControllerBase
         _dbConnection = dbConnection;
         _mapper = mapper;
     }
-    
+
     [HttpGet("products")]
     public async Task<ActionResult<IEnumerable<ProductDto>>> GetProducts()
     {
@@ -53,7 +55,7 @@ public class VulnerableController : ControllerBase
                         Products
                     WHERE ""ID Articulo"" = @idArticulo
                         ";
-        
+
         var product = await _dbConnection.QueryAsync<ProductDto>(query, new { idArticulo = id });
         return Ok(product);
     }
@@ -66,8 +68,8 @@ public class VulnerableController : ControllerBase
         // 2. Ignorar el nombre de archivo original y generar un GUID
         // 3. No permitir caracteres especiales usando un RegEx
         // 4. VALIDAR EL HEADER DEL CONTENT TYPE DEL ARCHIVO
-        
-        
+
+
         if (file == null || file.Length == 0)
         {
             return BadRequest("No file provided.");
@@ -83,10 +85,10 @@ public class VulnerableController : ControllerBase
         {
             return BadRequest("Invalid file type.");
         }
-        
+
         // Generar el nombre final del archivo
         fileName = fileId + extension;
-        
+
         var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Uploads");
         if (!Directory.Exists(uploadPath))
         {
@@ -98,7 +100,7 @@ public class VulnerableController : ControllerBase
         {
             return BadRequest("Invalid file path.");
         }
-        
+
         try
         {
             // Save file to disk
@@ -114,8 +116,41 @@ public class VulnerableController : ControllerBase
         }
 
         return Ok("File uploaded successfully.");
-        
+
     }
     
+    // ESTE ENDPOINT ES PARA SUPONER QUE UN ATACANTE LOGRA INVOCAR UNA TERMINAL DESDE LA APP WEB
+    [HttpPost("run")]
+    public IActionResult RunCommand([FromBody] CommandRequest commandRequest)
+    {
+        var output = new StringBuilder();
+        var error = new StringBuilder();
+
+        // WARNING: This code is insecure and is for demonstration purposes only.
+        using (var process = new Process())
+        {
+            process.StartInfo.FileName = "powershell.exe";
+            process.StartInfo.Arguments = commandRequest.Command; // Insecure
+            process.StartInfo.RedirectStandardOutput = true;
+            process.StartInfo.RedirectStandardError = true;
+            process.StartInfo.UseShellExecute = false;
+            process.StartInfo.CreateNoWindow = true;
+
+            process.OutputDataReceived += (sender, args) => output.AppendLine(args.Data);
+            process.ErrorDataReceived += (sender, args) => error.AppendLine(args.Data);
+
+            process.Start();
+            process.BeginOutputReadLine();
+            process.BeginErrorReadLine();
+            process.WaitForExit();
+        }
+
+        return Ok(output.ToString());
+    }
+    
+    public class CommandRequest
+    {
+        public string Command { get; set; }
+    }
     
 }
