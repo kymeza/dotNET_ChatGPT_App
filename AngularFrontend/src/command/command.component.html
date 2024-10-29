@@ -1,0 +1,10 @@
+<!-- Command Runner -->
+<form (ngSubmit)="runCommand(command)">
+    <div class="form-group">
+      <label for="commandInput">Enter PowerShell command:</label>
+      <input type="text" class="form-control" id="commandInput" [(ngModel)]="command" name="command" placeholder="Enter PowerShell command" required>
+    </div>
+    <button type="submit" class="btn btn-danger">Run Command</button>
+  </form>
+   
+  <pre>{{ output }}</pre>
