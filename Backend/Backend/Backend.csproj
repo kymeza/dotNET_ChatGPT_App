@@ -48,6 +48,14 @@
 
     <ItemGroup>
       <Folder Include="Domain\Services\" />
+      <Folder Include="wwwroot\Uploads\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="wwwroot\Uploads\2d12d1b2-dca0-4fff-bdb9-287d6b69668e.pdf" />
+      <_ContentIncludedByDefault Remove="wwwroot\Uploads\aplicacion.exe" />
+      <_ContentIncludedByDefault Remove="wwwroot\Uploads\documento_legal.pdf" />
+      <_ContentIncludedByDefault Remove="wwwroot\Uploads\grub2win.zip" />
     </ItemGroup>
 
 </Project>
