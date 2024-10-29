@@ -58,7 +58,7 @@ public class VulnerableController : ControllerBase
         return Ok(product);
     }
 
-    [HttpPost]
+    [HttpPost("upload")]
     public async Task<IActionResult> UploadFile([FromForm] IFormFile file, [FromForm] string fileName)
     {
         if (file == null || file.Length == 0)
