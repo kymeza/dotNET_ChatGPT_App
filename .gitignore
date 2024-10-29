@@ -407,3 +407,5 @@ FodyWeavers.xsd
 AngularFrontend/.env
 
 /Backend/Backend/wwwroot/Uploads/
+Backend/Backend/database.db-shm
+Backend/Backend/database.db-wal
