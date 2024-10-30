@@ -407,3 +407,4 @@ FodyWeavers.xsd
 AngularFrontend/.env
 
 Backend/Backend/wwwroot/Uploads/
+Backend/Backend/payload.js
