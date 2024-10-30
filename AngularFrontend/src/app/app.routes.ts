@@ -3,10 +3,12 @@ import { LoginComponent } from '../auth/login.component';
 import { ChatComponent } from '../chat/chat.component';
 import { AuthGuard } from '../auth/auth.guard';
 import { UploadFileComponent } from '../fileUpload/fileupload.component';
+import { CommandComponent } from '../command/command.component';
 
 export const routes: Routes = [
     {path: 'login', component: LoginComponent},
     {path: 'chat', component: ChatComponent, canActivate: [AuthGuard]},
     {path: 'upload', component: UploadFileComponent, canActivate: [AuthGuard]},
+    {path: 'command', component: CommandComponent, canActivate: [AuthGuard]},
     {path: '', redirectTo: '/login', pathMatch: 'full'}
 ];
