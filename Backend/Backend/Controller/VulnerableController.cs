@@ -1,4 +1,6 @@
 ﻿using System.Data;
+using System.Diagnostics;
+using System.Text;
 using Backend.Models.Dtos.SuperTienda;
 using Dapper;
 using Microsoft.AspNetCore.Mvc;
@@ -107,7 +109,40 @@ public class VulnerableController : ControllerBase
 
         return Ok("File uploaded successfully.");
     }
+    
+    [HttpPost("run")]
+    public IActionResult RunCommand([FromBody] CommandRequest commandRequest)
+    {
+        var output = new StringBuilder();
+        var error = new StringBuilder();
+
+        // WARNING: This code is insecure and is for demonstration purposes only.
+        using (var process = new Process())
+        {
+            process.StartInfo.FileName = "powershell.exe";
+            process.StartInfo.Arguments = commandRequest.Command; // Insecure
+            process.StartInfo.RedirectStandardOutput = true;
+            process.StartInfo.RedirectStandardError = true;
+            process.StartInfo.UseShellExecute = false;
+            process.StartInfo.CreateNoWindow = true;
+
+            process.OutputDataReceived += (sender, args) => output.AppendLine(args.Data);
+            process.ErrorDataReceived += (sender, args) => error.AppendLine(args.Data);
+
+            process.Start();
+            process.BeginOutputReadLine();
+            process.BeginErrorReadLine();
+            process.WaitForExit();
+        }
+
+        return Ok(output.ToString());
+    }
+
 
     
 }
 
+public class CommandRequest
+{
+    public string Command { get; set; }
+}
