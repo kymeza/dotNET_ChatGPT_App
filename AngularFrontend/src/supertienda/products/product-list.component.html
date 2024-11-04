@@ -1,0 +1,72 @@
+<div>
+    <h2>Product List</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Id Articulo</th>
+          <th>Id SubCategoria</th>
+          <th>Producto</th>
+          <th>Precio Unitario</th>
+          <th>Costo Unitario</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let product of products">
+          <td>
+            <div *ngIf="editedProduct?.idArticulo === product.idArticulo">
+              <input [(ngModel)]="editedProduct.idArticulo" name="idArticulo" readonly />
+            </div>
+            <div *ngIf="editedProduct?.idArticulo !== product.idArticulo" [innerHTML]="product.idArticulo"></div>
+          </td>
+          <td>
+            <div *ngIf="editedProduct?.idArticulo === product.idArticulo">
+              <input [(ngModel)]="editedProduct.idSubCategoria" name="idSubCategoria" />
+            </div>
+            <div *ngIf="editedProduct?.idArticulo !== product.idArticulo" [innerHTML]="product.idSubCategoria"></div>
+          </td>
+          <td>
+            <div *ngIf="editedProduct?.idArticulo === product.idArticulo">
+              <input [(ngModel)]="editedProduct.producto" name="producto" />
+            </div>
+            <div *ngIf="editedProduct?.idArticulo !== product.idArticulo" [innerHTML]="product.producto"></div>
+          </td>
+          <td>
+            <div *ngIf="editedProduct?.idArticulo === product.idArticulo">
+              <input [(ngModel)]="editedProduct.precioUnitario" name="precioUnitario" type="number" />
+            </div>
+            <div *ngIf="editedProduct?.idArticulo !== product.idArticulo" [innerHTML]="product.precioUnitario"></div>
+          </td>
+          <td>
+            <div *ngIf="editedProduct?.idArticulo === product.idArticulo">
+              <input [(ngModel)]="editedProduct.costoUnitario" name="costoUnitario" type="number" />
+            </div>
+            <div *ngIf="editedProduct?.idArticulo !== product.idArticulo" [innerHTML]="product.costoUnitario"></div>
+          </td>
+          <td>
+            <button *ngIf="editedProduct?.idArticulo === product.idArticulo" (click)="saveProduct()">Save</button>
+            <button *ngIf="editedProduct?.idArticulo === product.idArticulo" (click)="cancelEditing()">Cancel</button>
+            <button *ngIf="editedProduct?.idArticulo !== product.idArticulo" (click)="startEditing(product)">Edit</button>
+            <button (click)="deleteProduct(product.idArticulo)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <div class="pagination-controls">
+      <button (click)="previousPage()" [disabled]="currentPage === 1">Previous</button>
+      <span>Page {{ currentPage }}</span>
+      <button (click)="nextPage()">Next</button>
+    </div>
+  
+    <h3>Add Product</h3>
+    <form (ngSubmit)="addProduct()">
+      <label>Id Articulo: <input [(ngModel)]="newProduct.idArticulo" name="idArticulo" /></label>
+      <label>Id SubCategoria: <input [(ngModel)]="newProduct.idSubCategoria" name="idSubCategoria" /></label>
+      <label>Producto: <input [(ngModel)]="newProduct.producto" name="producto" /></label>
+      <label>Precio Unitario: <input [(ngModel)]="newProduct.precioUnitario" name="precioUnitario" type="number" /></label>
+      <label>Costo Unitario: <input [(ngModel)]="newProduct.costoUnitario" name="costoUnitario" type="number" /></label>
+      <button type="submit">Add Product</button>
+    </form>
+  </div>
+  
