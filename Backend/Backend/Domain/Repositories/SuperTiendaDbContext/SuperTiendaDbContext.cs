@@ -2,13 +2,13 @@
 
 namespace Backend.Domain.Repositories.SuperTiendaDbContext;
 
-public partial class SuperTiendaContext : DbContext
+public partial class SuperTiendaDbContext : DbContext
 {
-    public SuperTiendaContext()
+    public SuperTiendaDbContext()
     {
     }
 
-    public SuperTiendaContext(DbContextOptions<SuperTiendaContext> options)
+    public SuperTiendaDbContext(DbContextOptions<SuperTiendaDbContext> options)
         : base(options)
     {
     }

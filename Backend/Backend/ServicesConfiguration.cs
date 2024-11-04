@@ -28,7 +28,7 @@ public static class ServicesConfiguration
         services.AddDbContext<IAppDbContext, AppDbContext>(options =>
             options.UseSqlite(configuration.GetConnectionString("AppDbContext")));
         
-        services.AddDbContext<SuperTiendaContext>(options =>
+        services.AddDbContext<SuperTiendaDbContext>(options =>
                 options.UseSqlite(configuration.GetConnectionString("SuperTiendaDbContext")));
 
         services.AddScoped<IDbConnection>(sp =>
