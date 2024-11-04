@@ -1,37 +1,41 @@
 ﻿using AutoMapper;
 using Backend.Domain.Repositories.SuperTiendaDbContext;
 using Backend.Models.Dtos.SuperTienda;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Controller.SuperTienda;
 
-[Route("api/supertienda/[controller]")]
+[Authorize]
+[Route("api/supertienda/products")]
 [ApiController]
 public class ProductsController : ControllerBase
 {
-    private readonly SuperTiendaContext _context;
+    private readonly SuperTiendaDbContext _dbContext;
     private readonly IMapper _mapper;
 
-    public ProductsController(SuperTiendaContext context, IMapper mapper)
+    public ProductsController(SuperTiendaDbContext dbContext, IMapper mapper)
     {
-        _context = context;
+        _dbContext = dbContext;
         _mapper = mapper;
     }
 
-    // TO-DO --> Abstract the logic to a service
-
-
     // GET: api/Products
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<ProductDto>>> GetProducts()
+    public async Task<ActionResult<IEnumerable<ProductDto>>> GetProducts(int pageNumber = 1, int pageSize = 20)
     {
-        if (_context.Products == null)
+        if (_dbContext.Products == null)
         {
             return NotFound();
         }
 
-        var products = await _context.Products.ToListAsync();
+        var products = await _dbContext.Products
+            .OrderBy(x=> x.IdArticulo)
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+
         var productsDto = _mapper.Map<List<ProductDto>>(products);
         return Ok(productsDto);
     }
@@ -40,12 +44,12 @@ public class ProductsController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<ProductDto>> GetProduct(string id)
     {
-        if (_context.Products == null)
+        if (_dbContext.Products == null)
         {
             return NotFound();
         }
 
-        var product = await _context.Products.FindAsync(id);
+        var product = await _dbContext.Products.FindAsync(id);
 
         if (product == null)
         {
@@ -60,7 +64,7 @@ public class ProductsController : ControllerBase
     // PUT: api/Products/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutProduct(string id, Product productDto)
+    public async Task<IActionResult> PutProduct(string id, ProductDto productDto)
     {
         if (id != productDto.IdArticulo)
         {
@@ -68,11 +72,11 @@ public class ProductsController : ControllerBase
         }
 
         var product = _mapper.Map<Product>(productDto);
-        _context.Entry(product).State = EntityState.Modified;
+        _dbContext.Entry(product).State = EntityState.Modified;
 
         try
         {
-            await _context.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
         }
         catch (DbUpdateConcurrencyException)
         {
@@ -92,17 +96,17 @@ public class ProductsController : ControllerBase
     // POST: api/Products
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<Product>> PostProduct(Product product)
+    public async Task<ActionResult<Product>> PostProduct(ProductDto productDto)
     {
-        if (_context.Products == null)
+        if (_dbContext.Products == null)
         {
             return Problem("Entity set 'SuperTiendaContext.Products'  is null.");
         }
-
-        _context.Products.Add(product);
+        var product = _mapper.Map<Product>(productDto);
+        _dbContext.Products.Add(product);
         try
         {
-            await _context.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
         }
         catch (DbUpdateException)
         {
@@ -123,25 +127,25 @@ public class ProductsController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteProduct(string id)
     {
-        if (_context.Products == null)
+        if (_dbContext.Products == null)
         {
             return NotFound();
         }
 
-        var product = await _context.Products.FindAsync(id);
+        var product = await _dbContext.Products.FindAsync(id);
         if (product == null)
         {
             return NotFound();
         }
 
-        _context.Products.Remove(product);
-        await _context.SaveChangesAsync();
+        _dbContext.Products.Remove(product);
+        await _dbContext.SaveChangesAsync();
 
         return NoContent();
     }
 
     private bool ProductExists(string id)
     {
-        return (_context.Products?.Any(e => e.IdArticulo == id)).GetValueOrDefault();
+        return (_dbContext.Products?.Any(e => e.IdArticulo == id)).GetValueOrDefault();
     }
 }

@@ -49,7 +49,6 @@
     <ItemGroup>
       <Folder Include="Domain\Repositories\SuperTiendaDbContext\" />
       <Folder Include="Domain\Services\" />
-      <Folder Include="Migrations\" />
       <Folder Include="wwwroot\Uploads\" />
     </ItemGroup>
 
