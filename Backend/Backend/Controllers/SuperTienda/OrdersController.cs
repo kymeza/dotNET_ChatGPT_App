@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace Backend.Controller.SuperTienda;
+namespace Backend.Controllers.SuperTienda;
 
 [Authorize]
 [Route("api/supertienda/orders")]

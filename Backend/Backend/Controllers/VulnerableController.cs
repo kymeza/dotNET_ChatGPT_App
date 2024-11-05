@@ -5,7 +5,7 @@ using Backend.Models.Dtos.SuperTienda;
 using Dapper;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Backend.Controller;
+namespace Backend.Controllers;
 
 [ApiController]
 [Route("api/vulnerable")]

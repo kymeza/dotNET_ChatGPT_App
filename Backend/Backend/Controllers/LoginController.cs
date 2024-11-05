@@ -14,13 +14,11 @@ namespace Backend.Controllers;
 [Route("api/login")]
 public class LoginController : ControllerBase
 {
-    private readonly ILogger<LoginController> _logger;
     private readonly AppDbContext _appDbContext;
     private readonly JwtSettings _jwtSettings;
 
-    public LoginController(ILogger<LoginController> logger, JwtSettings jwtSettings, AppDbContext appDbContext)
+    public LoginController(JwtSettings jwtSettings, AppDbContext appDbContext)
     {
-        _logger = logger;
         _jwtSettings = jwtSettings;
         _appDbContext = appDbContext;
     }
@@ -39,7 +37,7 @@ public class LoginController : ControllerBase
             return Unauthorized("Invalid Credentials");
         }
     }
-    
+
     private bool IsValidUser(UserLoginModel user)
     {
         var userInDb = _appDbContext.Users.FirstOrDefault(u => u.Username == user.Username);
@@ -49,7 +47,7 @@ public class LoginController : ControllerBase
             return validPassword;
         }
         return false;
-    }
+     }
 
     private string GenerateJwtToken(string username)
     {
@@ -71,4 +69,5 @@ public class LoginController : ControllerBase
         var token = tokenHandler.CreateToken(tokenDescriptor);
         return tokenHandler.WriteToken(token);
     }
+
 }

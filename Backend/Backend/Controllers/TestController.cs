@@ -8,16 +8,14 @@ namespace Backend.Controllers;
 [Authorize]
 public class TestController : ControllerBase
 {
-    private readonly ILogger<TestController> _logger;
-
-    public TestController(ILogger<TestController> logger)
+    public TestController()
     {
-        _logger = logger;
+        
     }
 
     [HttpGet]
     public IActionResult Get()
     {
-        return Ok("Hello World from protected endpoint!");
+        return Ok("Hello from the test controller!");
     }
 }
