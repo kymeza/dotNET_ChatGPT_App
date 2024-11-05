@@ -2,11 +2,9 @@
 using AutoMapper;
 using Backend.Models.Dtos;
 using Dapper;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Backend.Controller;
+namespace Backend.Controllers;
 
 [ApiController]
 [Route("api/test")]

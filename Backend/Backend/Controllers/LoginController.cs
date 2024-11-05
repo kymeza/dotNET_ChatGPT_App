@@ -8,7 +8,7 @@ using Backend.Models.Config;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Backend.Controller;
+namespace Backend.Controllers;
 
 [ApiController]
 [Route("api/login")]

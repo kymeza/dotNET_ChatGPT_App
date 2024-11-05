@@ -4,7 +4,7 @@ using Backend.Models.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace Backend.Controller.SuperTienda;
+namespace Backend.Controllers.SuperTienda;
 
 [ApiController]
 [Route("api/supertienda/products")]
