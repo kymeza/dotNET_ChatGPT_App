@@ -1,12 +1,12 @@
 import { bootstrapApplication } from '@angular/platform-browser';
-import { provideHttpClient } from '@angular/common/http';  // Import provideHttpClient
+import { provideHttpClient, withInterceptors } from '@angular/common/http';  // Import provideHttpClient
+import { authInterceptor } from './auth/auth.interceptor';
 import { AppComponent } from './app/app.component';  // Root component
 import { appConfig } from './app/app.config';  // Import ApplicationConfig
 
 bootstrapApplication(AppComponent, {
   providers: [
-    provideHttpClient(),  // Globally provide HttpClient
+    provideHttpClient(withInterceptors([authInterceptor])),  // Globally provide HttpClient
     ...appConfig.providers  // Existing providers from appConfig
   ]
-})
-  .catch(err => console.error(err));
+}).catch(err => console.error(err));

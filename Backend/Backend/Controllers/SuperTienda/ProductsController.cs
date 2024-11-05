@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using Backend.Domain.Repositories.SuperTienda;
 using Backend.Models.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Controllers.SuperTienda;
 
+[Authorize]
 [ApiController]
 [Route("api/supertienda/products")]
 public class ProductsController : ControllerBase
