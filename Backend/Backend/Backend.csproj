@@ -7,19 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Compile Remove="Controllers\**" />
-      <Compile Remove="Helpers\**" />
-      <Content Remove="Controllers\**" />
-      <Content Remove="Helpers\**" />
-      <EmbeddedResource Remove="Controllers\**" />
-      <EmbeddedResource Remove="Helpers\**" />
-      <None Remove="Controllers\**" />
-      <None Remove="Helpers\**" />
-      <Content Remove="wwwroot\kyron.exe" />
-      <None Remove=".dll" />
-    </ItemGroup>
-
-    <ItemGroup>
         <PackageReference Include="AutoMapper" Version="13.0.1" />
         <PackageReference Include="Azure.AI.OpenAI" Version="2.0.0-beta.6" />
         <PackageReference Include="Dapper" Version="2.1.35" />
@@ -29,8 +16,8 @@
         <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.10" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.10" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.10">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="OpenAI" Version="2.0.0-beta.12" />
         <PackageReference Include="Serilog" Version="4.0.1" />
@@ -41,23 +28,16 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Content Update="appsettings.json.template">
-        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      </Content>
+        <Content Update="appsettings.json.template">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </Content>
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Domain\Services\" />
-      <Folder Include="wwwroot\Uploads\" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <_ContentIncludedByDefault Remove="wwwroot\Uploads\2d12d1b2-dca0-4fff-bdb9-287d6b69668e.pdf" />
-      <_ContentIncludedByDefault Remove="wwwroot\Uploads\aplicacion.exe" />
-      <_ContentIncludedByDefault Remove="wwwroot\Uploads\documento_legal.pdf" />
-      <_ContentIncludedByDefault Remove="wwwroot\Uploads\grub2win.zip" />
+        <Folder Include="Domain\Repositories\SuperTiendaDbContext\" />
+        <Folder Include="wwwroot\Uploads\" />
     </ItemGroup>
 
 </Project>
