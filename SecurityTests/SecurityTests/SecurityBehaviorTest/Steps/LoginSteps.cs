@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
 using TechTalk.SpecFlow;
 
 namespace SecurityTests.SecurityBehaviorTest.Steps;
@@ -11,17 +13,24 @@ namespace SecurityTests.SecurityBehaviorTest.Steps;
 [Binding]
 public class LoginSteps
 {
+
+    private IWebDriver _driver;
+
     [BeforeScenario]
     public void SetUp()
     {
-        //Configurar el comienzo del escenario de testeo
+        var chromeOptions = new ChromeOptions();
+        chromeOptions.AddArgument("--ignore-certificate-errors");
+
+        _driver = new ChromeDriver(chromeOptions);
+        _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
     }
 
 
     [AfterScenario]
     public void TearDown()
     {
-        // Configurar la salida del testeo de algun escenario
+       //_driver.Quit();
     }
 
     // Scenario: Login Exitoso por parte del usuario
@@ -29,20 +38,20 @@ public class LoginSteps
     [Given(@"el usuario navega a ""(.*)""")]
     public void DadoQueElUsuarioNavegaA(string url)
     {
-
+        _driver.Navigate().GoToUrl(url);
     }
 
     [When(@"el usario ingresa ""(.*)"" dentro del campo de usuario")]
     public void CuandoElUsuarioIngresaUsuarioEnElCampoDeUsuario(string userName)
     {
-
+        throw new PendingStepException();
     }
 
 
     [When(@"el usuario ingresa ""(.*)"" dentro del campo de contraseña")]
     public void CuandoElUsuarioIngresaContrasenaEnElCampoContrasena(string password)
     {
-
+        throw new PendingStepException();
     }
 
     [When(@"el usuario presiona Login")]
