@@ -97,13 +97,13 @@ namespace SecurityTests.SecurityBehaviorTest.Features
   testRunner.When("el usario ingresa \"kmeza\" dentro del campo de usuario", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 6
-  testRunner.And("el usuario ingresa \"asdf.1234\" dentro del campo de contrase�a", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("el usuario ingresa \"asdf.1234\" dentro del campo de contraseña", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 7
   testRunner.And("el usuario presiona Login", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 8
-  testRunner.Then("el usuario deber�a ver la ruta \"/chat\" en la app", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.Then("el usuario debería ver la ruta \"/chat\" en la app", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -133,13 +133,134 @@ namespace SecurityTests.SecurityBehaviorTest.Features
   testRunner.When("el usario ingresa \"asdfasdf\" dentro del campo de usuario", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 13
-  testRunner.And("el usuario ingresa \"asdf.1234\" dentro del campo de contrase�a", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("el usuario ingresa \"asdf.1234\" dentro del campo de contraseña", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 14
   testRunner.And("el usuario presiona Login", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 15
-  testRunner.Then("el usuario deber�a ver un mensaje de error: \"Invalid username or password", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.Then("el usuario debería ver un mensaje de error: \"Invalid username or password\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 16
+  testRunner.And("el usuraio no debería ver una traza de excepcion", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Login erroneo por parte del usuario por contraseña incorrecta")]
+        public void LoginErroneoPorParteDelUsuarioPorContrasenaIncorrecta()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Login erroneo por parte del usuario por contraseña incorrecta", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 18
+ this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 19
+  testRunner.Given("el usuario navega a \"https://localhost:7288/login\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 20
+  testRunner.When("el usario ingresa \"kmeza\" dentro del campo de usuario", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 21
+  testRunner.And("el usuario ingresa \"1234.asdf.1234\" dentro del campo de contraseña", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 22
+  testRunner.And("el usuario presiona Login", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 23
+  testRunner.Then("el usuario debería ver un mensaje de error: \"Invalid username or password\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 24
+  testRunner.And("el usuraio no debería ver una traza de excepcion", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Login erroneo por parte del usuario de manera repetida (3 veces)")]
+        public void LoginErroneoPorParteDelUsuarioDeManeraRepetida3Veces()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Login erroneo por parte del usuario de manera repetida (3 veces)", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 26
+ this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 27
+  testRunner.Given("el usuario navega a \"https://localhost:7288/login\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 28
+  testRunner.When("el usario ingresa \"kmeza\" dentro del campo de usuario", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 29
+  testRunner.And("el usuario ingresa \"1234.asdf.1234\" dentro del campo de contraseña", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 30
+  testRunner.And("el usuario presiona Login", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 31
+  testRunner.Then("el usuario debería ver un mensaje de error: \"Su cuenta ha sido bloqueada temporal" +
+                        "mente debido a razones de seguridad\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 32
+  testRunner.And("el usuraio no debería ver una traza de excepcion", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Un atacante intena logear usando SQL Injection con un diccionario")]
+        public void UnAtacanteIntenaLogearUsandoSQLInjectionConUnDiccionario()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Un atacante intena logear usando SQL Injection con un diccionario", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 34
+ this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 35
+  testRunner.Given("el atacante navega a \"https://localhost:7288/login\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 36
+  testRunner.When("el atacante ingresa \"\" dentro del campo de usuario", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 37
+  testRunner.And("el atacante ingresa sus payload de inyeccion dentro del campo de contraseña", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 38
+  testRunner.And("el atacante presiona Login", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 39
+  testRunner.Then("el atacante debería ver un mensaje de error: \"Invalid username or password\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 40
+  testRunner.And("el atacante no debería ver una traza de excepcion", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
