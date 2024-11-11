@@ -6,7 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using TechTalk.SpecFlow;
+using OpenQA.Selenium.Support.UI;
+using Reqnroll;
 
 namespace SecurityTests.SecurityBehaviorTest.Steps;
 
@@ -15,15 +16,23 @@ public class LoginSteps
 {
 
     private IWebDriver _driver;
+    private WebDriverWait _wait;
+
 
     [BeforeScenario]
     public void SetUp()
     {
         var chromeOptions = new ChromeOptions();
         chromeOptions.AddArgument("--ignore-certificate-errors");
+        chromeOptions.SetLoggingPreference(LogType.Browser, LogLevel.Info); // Enable console logs
+
 
         _driver = new ChromeDriver(chromeOptions);
         _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+        _driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(10);
+
+        _wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10)); // Set a 10-second timeout
+
     }
 
 
@@ -44,26 +53,39 @@ public class LoginSteps
     [When(@"el usario ingresa ""(.*)"" dentro del campo de usuario")]
     public void CuandoElUsuarioIngresaUsuarioEnElCampoDeUsuario(string userName)
     {
-        throw new PendingStepException();
+        var campo = _driver.FindElement(By.Id("username"));
+        campo.SendKeys(userName);
     }
 
 
     [When(@"el usuario ingresa ""(.*)"" dentro del campo de contraseña")]
     public void CuandoElUsuarioIngresaContrasenaEnElCampoContrasena(string password)
     {
-        throw new PendingStepException();
+        var campo = _driver.FindElement(By.XPath("//body/app-root/app-login/div/form/input[2]"));
+        campo.SendKeys(password);
     }
 
     [When(@"el usuario presiona Login")]
     public void CuandoElUsuarioPresionaLogin()
     {
-        throw new PendingStepException();
+        var boton = _driver.FindElement(By.XPath("//body/app-root/app-login/div/form/button"));
+        boton.Click();
     }
 
     [Then(@"el usuario debería ver la ruta ""([^""]*)"" en la app")]
-    public void CuandoElUsuarioDeberiaVerLaRutaEnLaApp(string p0)
+    public void CuandoElUsuarioDeberiaVerLaRutaEnLaApp(string ruta)
     {
-        throw new PendingStepException();
+        // Retrieve console logs
+        var logs = _driver.Manage().Logs.GetLog(LogType.Browser);
+
+        foreach (var logEntry in logs)
+        {
+            Console.WriteLine($"{logEntry.Timestamp} - {logEntry.Level}: {logEntry.Message}");
+        }
+
+        _wait.Until(driver => driver.Url.Contains("/chat"));
+
+        Assert.That(_driver.Url, Does.Contain("/chat"));
     }
 
 }

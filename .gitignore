@@ -408,3 +408,5 @@ AngularFrontend/.env
 
 Backend/Backend/wwwroot/Uploads/
 Backend/Backend/payload.js
+Backend/Backend/database.db-shm
+Backend/Backend/database.db-wal
