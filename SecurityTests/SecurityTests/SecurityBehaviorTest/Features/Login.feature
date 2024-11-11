@@ -31,10 +31,8 @@ Feature: Login de un Usuario
 		Then el usuario debería ver un mensaje de error: "Su cuenta ha sido bloqueada temporalmente debido a razones de seguridad"
 		And el usuraio no debería ver una traza de excepcion
 
-	Scenario: Un atacante intena logear usando SQL Injection con un diccionario
+	Scenario: Un atacante intena logear usando ataques de diccionarios
 		Given el atacante navega a "https://localhost:7288/login"
-		When el atacante ingresa "" dentro del campo de usuario
-		And el atacante ingresa sus payload de inyeccion dentro del campo de contraseña
-		And el atacante presiona Login
+		When el atacante ingresa un diccionario de usuarios y un diccionario de contraseñas en los campos respectivos y presiona login
 		Then el atacante debería ver un mensaje de error: "Invalid username or password"
 		And el atacante no debería ver una traza de excepcion

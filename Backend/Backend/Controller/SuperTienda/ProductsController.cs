@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Security.Claims;
+using AutoMapper;
 using Backend.Domain.Repositories.SuperTiendaDbContext;
 using Backend.Models.Dtos.SuperTienda;
 using Microsoft.AspNetCore.Authorization;
@@ -12,13 +13,17 @@ namespace Backend.Controller.SuperTienda;
 [ApiController]
 public class ProductsController : ControllerBase
 {
+    private readonly ILogger<ProductsController> _logger;
     private readonly SuperTiendaDbContext _dbContext;
     private readonly IMapper _mapper;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public ProductsController(SuperTiendaDbContext dbContext, IMapper mapper)
+    public ProductsController(SuperTiendaDbContext dbContext, IMapper mapper, ILogger<ProductsController> logger, IHttpContextAccessor httpContextAccessor)
     {
         _dbContext = dbContext;
         _mapper = mapper;
+        _logger = logger;
+        _httpContextAccessor = httpContextAccessor;
     }
 
     // TO-DO --> Abstract the logic to a service
@@ -28,6 +33,8 @@ public class ProductsController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<ProductDto>>> GetProducts(int pageNumber = 1, int pageSize = 20)
     {
+        var userLoggedIn = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Value == ClaimTypes.Name);
+        _logger.LogInformation("User {user} has requested api/Products endpoint", userLoggedIn);
         if (_dbContext.Products == null)
         {
             return NotFound();
