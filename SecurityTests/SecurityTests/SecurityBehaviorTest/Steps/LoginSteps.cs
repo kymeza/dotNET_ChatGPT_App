@@ -16,7 +16,8 @@ public class LoginSteps
 {
 
     private IWebDriver _driver;
-    private WebDriverWait _wait;
+    private WebDriverWait _driverWait;
+    
 
 
     [BeforeScenario]
@@ -24,14 +25,15 @@ public class LoginSteps
     {
         var chromeOptions = new ChromeOptions();
         chromeOptions.AddArgument("--ignore-certificate-errors");
-        chromeOptions.SetLoggingPreference(LogType.Browser, LogLevel.Info); // Enable console logs
 
 
         _driver = new ChromeDriver(chromeOptions);
+
         _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
         _driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(10);
 
-        _wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10)); // Set a 10-second timeout
+        _driverWait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
+
 
     }
 
@@ -76,16 +78,13 @@ public class LoginSteps
     public void CuandoElUsuarioDeberiaVerLaRutaEnLaApp(string ruta)
     {
         // Retrieve console logs
-        var logs = _driver.Manage().Logs.GetLog(LogType.Browser);
 
-        foreach (var logEntry in logs)
-        {
-            Console.WriteLine($"{logEntry.Timestamp} - {logEntry.Level}: {logEntry.Message}");
-        }
+        _driverWait.Until(driver => driver.Url.Contains("/chat"));
 
-        _wait.Until(driver => driver.Url.Contains("/chat"));
+        var urlActual = _driver.Url;
+        var rutaEsperada = urlActual.Contains("/chat");
+        Assert.That(rutaEsperada);
 
-        Assert.That(_driver.Url, Does.Contain("/chat"));
+    
     }
-
 }
