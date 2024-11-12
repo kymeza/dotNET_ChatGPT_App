@@ -29,7 +29,7 @@ Feature: User Login
 		Then  el atacante DEBERÍA ver el mensaje "Incorrect username or password"
 		Then  el atacante NO DEBERÍA ver una excepcion en consola.
 
-	Scenario: Un atacante intenta usar un diccionario de inyeccion sql en el login
+	Scenario: Un atacante intenta usar un diccionario de usuarios y contraseñas
 		Given Un atacante entra a la url "https://localhost:7288/login"
 		When  el atacante ingresa las entradas del diccionario en el campo de username
 		And  el atacante ingresa "1234.asdf.1234" en el campo de password

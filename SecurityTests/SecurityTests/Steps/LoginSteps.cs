@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Support.UI;
 using Reqnroll;
 
 namespace SecurityTests.Steps;
@@ -14,6 +15,7 @@ public class LoginSteps
 {
 
     private IWebDriver _driver;
+    private WebDriverWait _driverWait;
 
     [BeforeScenario]
     public void SetUp()
@@ -23,6 +25,13 @@ public class LoginSteps
 
 
         _driver = new ChromeDriver(chromeOptions);
+
+        _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+        _driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(10);
+
+        _driverWait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
+
+
     }
 
     [AfterScenario]
@@ -62,6 +71,9 @@ public class LoginSteps
     [Then(@"el usuario es redireccionado a ""(.*)""")]
     public void ThenElUsuarioEsRedireccionadoA(string urlEsperada)
     {
+
+        _driverWait.Until(d => d.Url.Contains("/chat"));
+
         var urlActual = _driver.Url;
 
         var estoyEnLaUrlDeseada = urlActual.Contains("/chat");
