@@ -41,25 +41,33 @@ public class LoginSteps
     [When(@"el usuario ingresa ""(.*)"" en el campo de username")]
     public void WhenElUsuarioIngresaStringEnElCampoUsername(string userName)
     {
-
+        var usernameInput = _driver.FindElement(By.Id("username"));
+        usernameInput.SendKeys(userName);
     }
 
     [When(@"el usuario ingresa ""(.*)"" en el campo de password")]
-    public void WhenElUsuarioIngresaEnElCampoDePassword(string p0)
+    public void WhenElUsuarioIngresaEnElCampoDePassword(string password)
     {
-        throw new PendingStepException();
+        var passwordInput = _driver.FindElement(By.XPath("/html/body/app-root/app-login/div/form/input[2]"));
+        passwordInput.SendKeys(password);
     }
 
     [When("el usuario presiona el boton login")]
     public void WhenElUsuarioPresionaElBotonLogin()
     {
-        throw new PendingStepException();
+        var botonLogin = _driver.FindElement(By.XPath("/html/body/app-root/app-login/div/form/button"));
+        botonLogin.Click();
     }
 
     [Then(@"el usuario es redireccionado a ""(.*)""")]
-    public void ThenElUsuarioEsRedireccionadoA(string p0)
+    public void ThenElUsuarioEsRedireccionadoA(string urlEsperada)
     {
-        throw new PendingStepException();
+        var urlActual = _driver.Url;
+
+        var estoyEnLaUrlDeseada = urlActual.Contains("/chat");
+
+        Assert.That(estoyEnLaUrlDeseada);
+
     }
 
 
