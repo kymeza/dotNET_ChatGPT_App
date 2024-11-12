@@ -39,5 +39,4 @@
         <Folder Include="Domain\Repositories\SuperTiendaDbContext\" />
         <Folder Include="wwwroot\Uploads\" />
     </ItemGroup>
-
 </Project>
