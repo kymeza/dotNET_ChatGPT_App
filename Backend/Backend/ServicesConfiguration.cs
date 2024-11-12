@@ -12,7 +12,9 @@ public static class ServicesConfiguration
 {
     public static void RegisterServices(IServiceCollection services, IConfiguration configuration)
     {
-    
+
+        services.AddHttpContextAccessor();
+        
         // Configuration
         services.AddOptionsAsSelf<OpenAiSettings>(configuration.GetSection("OpenAi"));
         services.AddOptionsAsSelf<JwtSettings>(configuration.GetSection("Jwt"));

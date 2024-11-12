@@ -29,11 +29,9 @@ Feature: User Login
 		Then  el atacante DEBERÍA ver el mensaje "Incorrect username or password"
 		Then  el atacante NO DEBERÍA ver una excepcion en consola.
 
-	Scenario: Un atacante intenta usar un diccionario de usuarios y contraseñas
+	Scenario: Un atacante intenta usar un diccionario de usuarios y contrasenas
 		Given Un atacante entra a la url "https://localhost:7288/login"
-		When  el atacante ingresa las entradas del diccionario en el campo de username
-		And  el atacante ingresa "1234.asdf.1234" en el campo de password
-		And  el atacante presiona el boton login
-		Then  el atacante DEBERÍA ver el mensaje "Incorrect username or password"
+		When Un atacante ataca los inputs de username y password con diccionarios y presiona login en cada intento
+		Then  el atacante no debería tener intentos exitosos
 		Then  el atacante NO DEBERÍA ver una excepcion en consola.
 

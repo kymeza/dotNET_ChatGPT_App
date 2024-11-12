@@ -14,18 +14,23 @@ namespace Backend.Controllers;
 [Route("api/login")]
 public class LoginController : ControllerBase
 {
+    private readonly ILogger<LoginController> _logger;
     private readonly AppDbContext _appDbContext;
     private readonly JwtSettings _jwtSettings;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public LoginController(JwtSettings jwtSettings, AppDbContext appDbContext)
+    public LoginController(JwtSettings jwtSettings, AppDbContext appDbContext, ILogger<LoginController> logger, IHttpContextAccessor httpContextAccessor)
     {
         _jwtSettings = jwtSettings;
         _appDbContext = appDbContext;
+        _logger = logger;
+        _httpContextAccessor = httpContextAccessor;
     }
 
     [HttpPost]
     public IActionResult Login([FromBody] UserLoginModel user)
     {
+        _logger.LogInformation("Login attempt requested for user: {user} from IP: {ipAddr}", user.Username, _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString());
         // Validate the user credentials
         if (IsValidUser(user))
         {
@@ -34,6 +39,7 @@ public class LoginController : ControllerBase
         }
         else
         {
+            _logger.LogWarning("Login attempt for user: {user} was unsucessful", user.Username);
             return Unauthorized("Invalid Credentials");
         }
     }

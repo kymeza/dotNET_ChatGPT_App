@@ -15,12 +15,14 @@ public class ProductsController : ControllerBase
     private readonly ILogger<ProductsController> _logger;
     private readonly SuperTiendaDbContext _dbContext;
     private readonly IMapper _mapper;
+    private readonly IHttpContextAccessor _httpContextAccessor;
     
-    public ProductsController(ILogger<ProductsController> logger, SuperTiendaDbContext dbContext, IMapper mapper)
+    public ProductsController(ILogger<ProductsController> logger, SuperTiendaDbContext dbContext, IMapper mapper, IHttpContextAccessor httpContextAccessor)
     {
         _logger = logger;
         _dbContext = dbContext;
         _mapper = mapper;
+        _httpContextAccessor = httpContextAccessor;
     }
     
     // GET: api/Products
@@ -100,6 +102,8 @@ public class ProductsController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Product>> PostProduct(ProductDto productDto)
     {
+        _logger.LogInformation("User: {user} has sent a Product Create request",_httpContextAccessor.HttpContext.User.Identity.Name);
+        
         if (_dbContext.Products == null)
         {
             return Problem("Entity set 'SuperTiendaContext.Products'  is null.");

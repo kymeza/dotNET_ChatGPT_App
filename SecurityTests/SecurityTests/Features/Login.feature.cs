@@ -229,12 +229,12 @@ namespace SecurityTests.Features
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Un atacante intenta usar un diccionario de inyeccion sql en el login")]
-        public async System.Threading.Tasks.Task UnAtacanteIntentaUsarUnDiccionarioDeInyeccionSqlEnElLogin()
+        [NUnit.Framework.DescriptionAttribute("Un atacante intenta usar un diccionario de usuarios y contrasenas")]
+        public async System.Threading.Tasks.Task UnAtacanteIntentaUsarUnDiccionarioDeUsuariosYContrasenas()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Un atacante intenta usar un diccionario de inyeccion sql en el login", null, tagsOfScenario, argumentsOfScenario, featureTags);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Un atacante intenta usar un diccionario de usuarios y contrasenas", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 32
  this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -249,18 +249,13 @@ namespace SecurityTests.Features
   await testRunner.GivenAsync("Un atacante entra a la url \"https://localhost:7288/login\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
 #line 34
-  await testRunner.WhenAsync("el atacante ingresa las entradas del diccionario en el campo de username", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+  await testRunner.WhenAsync("Un atacante ataca los inputs de username y password con diccionarios y presiona l" +
+                        "ogin en cada intento", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 35
-  await testRunner.AndAsync("el atacante ingresa \"1234.asdf.1234\" en el campo de password", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+  await testRunner.ThenAsync("el atacante no deber�a tener intentos exitosos", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
 #line 36
-  await testRunner.AndAsync("el atacante presiona el boton login", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
-#line hidden
-#line 37
-  await testRunner.ThenAsync("el atacante DEBER�A ver el mensaje \"Incorrect username or password\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
-#line hidden
-#line 38
   await testRunner.ThenAsync("el atacante NO DEBER�A ver una excepcion en consola.", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
