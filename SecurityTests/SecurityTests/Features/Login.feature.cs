@@ -99,19 +99,19 @@ namespace SecurityTests.Features
             {
                 await this.ScenarioStartAsync();
 #line 4
-  await testRunner.GivenAsync("(Dado que) un usuario entra a la url \"https://localhost:7288/login\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+  await testRunner.GivenAsync("Un usuario entra a la url \"https://localhost:7288/login\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
 #line 5
-  await testRunner.WhenAsync("(Cuando) el usuario ingresa \"kmeza\" en el campo de username", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+  await testRunner.WhenAsync("el usuario ingresa \"kmeza\" en el campo de username", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 6
-  await testRunner.AndAsync("(Y) el usuario ingresa \"asdf.1234\" en el campo de password", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+  await testRunner.AndAsync("el usuario ingresa \"asdf.1234\" en el campo de password", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
 #line 7
-  await testRunner.AndAsync("(Y) el usuario presiona el boton login", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+  await testRunner.AndAsync("el usuario presiona el boton login", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
 #line 8
-  await testRunner.ThenAsync("(Entonces) el usuario es redireccionado a \"/chat\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+  await testRunner.ThenAsync("el usuario es redireccionado a \"/chat\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -135,19 +135,19 @@ namespace SecurityTests.Features
             {
                 await this.ScenarioStartAsync();
 #line 11
-  await testRunner.GivenAsync("(Dado que) un usuario entra a la url \"https://localhost:7288/login\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+  await testRunner.GivenAsync("Un usuario entra a la url \"https://localhost:7288/login\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
 #line 12
-  await testRunner.WhenAsync("(Cuando) el usuario ingresa \"notValid\" en el campo de username", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+  await testRunner.WhenAsync("el usuario ingresa \"notValid\" en el campo de username", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 13
-  await testRunner.AndAsync("(Y) el usuario ingresa \"notValid\" en el campo de password", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+  await testRunner.AndAsync("el usuario ingresa \"notValid\" en el campo de password", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
 #line 14
-  await testRunner.AndAsync("(Y) el usuario presiona el boton login", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+  await testRunner.AndAsync("el usuario presiona el boton login", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
 #line 15
-  await testRunner.ThenAsync("(Entonces) el usuario DEBER�A ver el mensaje \"Incorrect username or password\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+  await testRunner.ThenAsync("el usuario DEBER�A ver el mensaje \"Incorrect username or password\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -171,19 +171,19 @@ namespace SecurityTests.Features
             {
                 await this.ScenarioStartAsync();
 #line 18
-  await testRunner.GivenAsync("(Dado que) un usuario entra a la url \"https://localhost:7288/login\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+  await testRunner.GivenAsync("Un usuario entra a la url \"https://localhost:7288/login\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
 #line 19
-  await testRunner.WhenAsync("(Cuando) el usuario ingresa \"kmeza\" en el campo de username", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+  await testRunner.WhenAsync("el usuario ingresa \"kmeza\" en el campo de username", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 20
-  await testRunner.AndAsync("(Y) el usuario ingresa \"1234.asdf.1234\" en el campo de password", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+  await testRunner.AndAsync("el usuario ingresa \"1234.asdf.1234\" en el campo de password", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
 #line 21
-  await testRunner.AndAsync("(Y) el usuario presiona el boton login", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+  await testRunner.AndAsync("el usuario presiona el boton login", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
 #line 22
-  await testRunner.ThenAsync("(Entonces) el usuario DEBER�A ver el mensaje \"Incorrect username or password\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+  await testRunner.ThenAsync("el usuario DEBER�A ver el mensaje \"Incorrect username or password\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -207,22 +207,22 @@ namespace SecurityTests.Features
             {
                 await this.ScenarioStartAsync();
 #line 25
-  await testRunner.GivenAsync("(Dado que) un atacante entra a la url \"https://localhost:7288/login\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+  await testRunner.GivenAsync("Un atacante entra a la url \"https://localhost:7288/login\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
 #line 26
-  await testRunner.WhenAsync("(Cuando) el atacante ingresa \" \' OR \'1\'=\'1 \" en el campo de username", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+  await testRunner.WhenAsync("el atacante ingresa \" \' OR \'1\'=\'1 \" en el campo de username", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 27
-  await testRunner.AndAsync("(Y) el atacante ingresa \"1234.asdf.1234\" en el campo de password", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+  await testRunner.AndAsync("el atacante ingresa \"1234.asdf.1234\" en el campo de password", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
 #line 28
-  await testRunner.AndAsync("(Y) el atacante presiona el boton login", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+  await testRunner.AndAsync("el atacante presiona el boton login", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
 #line 29
-  await testRunner.ThenAsync("(Entonces) el atacante DEBER�A ver el mensaje \"Incorrect username or password\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+  await testRunner.ThenAsync("el atacante DEBER�A ver el mensaje \"Incorrect username or password\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
 #line 30
-  await testRunner.ThenAsync("(Entonces) el atacante NO DEBER�A ver una excepcion en consola.", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+  await testRunner.ThenAsync("el atacante NO DEBER�A ver una excepcion en consola.", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -246,23 +246,22 @@ namespace SecurityTests.Features
             {
                 await this.ScenarioStartAsync();
 #line 33
-  await testRunner.GivenAsync("(Dado que) un atacante entra a la url \"https://localhost:7288/login\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+  await testRunner.GivenAsync("Un atacante entra a la url \"https://localhost:7288/login\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
 #line 34
-  await testRunner.WhenAsync("(Cuando) el atacante ingresa las entradas del diccionario en el campo de username" +
-                        "", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+  await testRunner.WhenAsync("el atacante ingresa las entradas del diccionario en el campo de username", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 35
-  await testRunner.AndAsync("(Y) el atacante ingresa \"1234.asdf.1234\" en el campo de password", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+  await testRunner.AndAsync("el atacante ingresa \"1234.asdf.1234\" en el campo de password", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
 #line 36
-  await testRunner.AndAsync("(Y) el atacante presiona el boton login", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+  await testRunner.AndAsync("el atacante presiona el boton login", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
 #line 37
-  await testRunner.ThenAsync("(Entonces) el atacante DEBER�A ver el mensaje \"Incorrect username or password\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+  await testRunner.ThenAsync("el atacante DEBER�A ver el mensaje \"Incorrect username or password\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
 #line 38
-  await testRunner.ThenAsync("(Entonces) el atacante NO DEBER�A ver una excepcion en consola.", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+  await testRunner.ThenAsync("el atacante NO DEBER�A ver una excepcion en consola.", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
